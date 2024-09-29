@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>한국어 번역기</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        textarea, select, button { width: 100%; margin-bottom: 10px; }
+        #result { margin-top: 20px; border: 1px solid #ddd; padding: 10px; }
+    </style>
+</head>
+<body>
+    <h1>한국어 번역기</h1>
+    <textarea id="input_text" rows="5" placeholder="번역할 한국어 텍스트를 입력하세요..."></textarea>
+    <select id="target_lang">
+        <option value="en">영어</option>
+        <option value="ja">일본어</option>
+    </select>
+    <button id="translateBtn">번역하기</button>
+    <div id="result"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('translateBtn').addEventListener('click', performTranslation);
+        });
+
+        function performTranslation() {
+            console.log("번역 함수 호출됨");
+            var text = document.getElementById('input_text').value;
+            var targetLang = document.getElementById('target_lang').value;
+            var resultDiv = document.getElementById('result');
+
+            if (!text) {
+                alert("번역할 텍스트를 입력해주세요.");
+                return;
+            }
+
+            resultDiv.innerHTML = '번역 중...';
+
+            fetch('/translate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'text=' + encodeURIComponent(text) + '&target_lang=' + targetLang
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    resultDiv.innerHTML = '오류: ' + data.error;
+                } else {
+                    resultDiv.innerHTML = '<p><strong>원문:</strong> ' + data.original_text + '</p>' +
+                                          '<p><strong>번역:</strong> ' + data.translated_text + '</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                resultDiv.innerHTML = '번역 중 오류가 발생했습니다.';
+            });
+        }
+    </script>
+</body>
+</html>
