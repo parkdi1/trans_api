@@ -7,7 +7,8 @@
 ## 개요
 
 API 서버를 구축하여 API 의 이해도를 높이고자 함
-![Inline-image-2024-09-29 23.15.40.606.png](/wikis/3428316194296322569/files/3903347963098508090)
+![image](https://github.com/user-attachments/assets/da824633-2715-46d2-97e7-755ccd5bd898)
+
 
 ## 기능 상세
 
